@@ -37,7 +37,8 @@ public class Zdy {
                 length = new BigInteger(lengthStr, 16).intValue();
             }
         } catch (IOException e) {
-            System.out.println("IOEXCEPTION");
+            System.out.println("张大爷 IOEXCEPTION");
+            throw new RuntimeException(e);
         }
         return ret;
     }

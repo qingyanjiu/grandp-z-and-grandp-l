@@ -11,18 +11,19 @@ public class Client {
         Zdy zdy = new Zdy();
         Message message = new Message();
         byte[] b = new byte[100];
+        long start = System.currentTimeMillis();
         try (Socket socket = new Socket("localhost", 8088);
-            OutputStream os = socket.getOutputStream();
-            InputStream is = socket.getInputStream();) {
-            for (int i = 0; i < 4; i++) {
+             OutputStream os = socket.getOutputStream();
+             InputStream is = socket.getInputStream();) {
+            for (int i = 0; i < 10000; i++) {
                 message.setContent("zdy said " + i);
                 message.setUuid(i);
                 zdy.say(os, message);
             }
 
-            while(true) {
-                zdy.listen(b, is);
-            }
+            zdy.listen(b, is);
+        } finally {
+            System.out.println("总耗时 " + (System.currentTimeMillis() - start) / 1000);
         }
     }
 }

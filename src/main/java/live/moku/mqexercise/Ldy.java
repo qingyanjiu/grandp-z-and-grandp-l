@@ -52,7 +52,8 @@ public class Ldy {
                 length = new BigInteger(lengthStr, 16).intValue();
             }
         } catch (IOException e) {
-            System.out.println("IOEXCEPTION");
+            System.out.println("李大爷 IOEXCEPTION");
+            throw new RuntimeException(e);
         }
         return ret;
     }
