@@ -18,7 +18,7 @@ public class Ldy {
         }
     }
 
-    public Message listen(byte[] buffer, InputStream inputStream, OutputStream outputStream) {
+    public void listen(byte[] buffer, InputStream inputStream, OutputStream outputStream) {
         int l = 0;
         Message ret = null;
         Message reply = new Message();
@@ -46,15 +46,18 @@ public class Ldy {
                 this.say(outputStream, reply);
 
                 //继续读取下一个对象的长度
-                inputStream.read(b, 0, 4);
-                lengthStr = new String(b);
-                //进入下一个循环，取第二个对象。。。
-                length = new BigInteger(lengthStr, 16).intValue();
+                if(inputStream.read(b, 0, 4) != -1) {
+                    lengthStr = new String(b);
+                    //进入下一个循环，取第二个对象。。。
+                    length = new BigInteger(lengthStr, 16).intValue();
+                } else {
+                    //如果没有下一个对象了，说明客户端发送完了，退出
+                    return;
+                }
             }
         } catch (IOException e) {
             System.out.println("李大爷 IOEXCEPTION");
             throw new RuntimeException(e);
         }
-        return ret;
     }
 }
