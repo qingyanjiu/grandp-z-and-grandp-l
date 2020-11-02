@@ -15,20 +15,20 @@ import java.util.concurrent.Executors;
 
 public class MultiSocketClient {
 
-    public static final int POOL_TIMES = 100000;
+    public static final int POOL_TIMES = 10000;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         MultiSocketZdy zdy = new MultiSocketZdy();
         Message message = new Message();
         byte[] b = new byte[100];
 
-        CompletableFuture[] cfs = new CompletableFuture[POOL_TIMES];
+//        CompletableFuture[] cfs = new CompletableFuture[POOL_TIMES];
 
-        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+//        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < POOL_TIMES ; i++) {
             final int _i = i;
-            cfs[_i] = CompletableFuture.runAsync(() -> {
+//            cfs[_i] = CompletableFuture.runAsync(() -> {
                 try (Socket socket = new Socket("localhost", 8088);
                      OutputStream os = socket.getOutputStream();
                      InputStream is = socket.getInputStream();) {
@@ -40,13 +40,13 @@ public class MultiSocketClient {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }, es);
+//            }, es);
         }
 
-        CompletableFuture.allOf(cfs).join();
+//        CompletableFuture.allOf(cfs).join();
         System.out.println("总耗时 " + (System.currentTimeMillis() - startTime) + " ms");
 
-        es.shutdown();
+//        es.shutdown();
 
     }
 }

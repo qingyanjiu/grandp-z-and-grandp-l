@@ -6,25 +6,35 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MultiSocketServer {
 
     public static void main(String[] args) throws IOException {
 
-        ServerSocket serverSocket = new ServerSocket();
+        ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        final ServerSocket serverSocket = new ServerSocket();
         serverSocket.bind(new InetSocketAddress(8088));
         MultiSocketLdy ldy = new MultiSocketLdy();
-        Socket socket = null;
         byte[] b = new byte[100];
         while (true) {
-            socket = serverSocket.accept();
-            OutputStream os = socket.getOutputStream();
-            InputStream is = socket.getInputStream();
-            try {
-                ldy.listen(b, is, os);
-            } catch (Exception e) {
-                System.out.println("客户端连接已断开 " + e.getCause());
-            }
+            Socket socket = serverSocket.accept();
+            es.execute(() -> {
+                try (OutputStream os = socket.getOutputStream();
+                     InputStream is = socket.getInputStream();) {
+                    ldy.listen(b, is, os);
+                } catch (Exception e) {
+                    System.out.println("客户端连接已断开 " + e.getCause());
+                } finally {
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 }
