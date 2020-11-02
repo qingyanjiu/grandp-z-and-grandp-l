@@ -15,7 +15,7 @@ public class Serializer {
      * 后面内容转为json字符串
      * 自定义协议, 序列化的时候将数据长度放到内容前面
      */
-    private static byte[] putMessageLengthToByteArray(byte[] b) {
+    public static byte[] putMessageLengthToByteArray(byte[] b) {
         byte[] res = null;
         if (b != null) {
             int length = b.length;

@@ -1,4 +1,4 @@
-package live.moku.mqexercise.multisocket;
+package live.moku.mqexercise.multisocket.netty;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -76,6 +76,6 @@ public class NettyClient {
         message.setUuid(0);
         message.setContent("test");
         //channel对象可保存在map中，供其它地方发送消息
-        channel.writeAndFlush(message);
+        channel.writeAndFlush(message.toString());
     }
 }

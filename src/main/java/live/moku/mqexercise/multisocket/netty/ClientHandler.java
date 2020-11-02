@@ -1,4 +1,4 @@
-package live.moku.mqexercise.multisocket;
+package live.moku.mqexercise.multisocket.netty;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
