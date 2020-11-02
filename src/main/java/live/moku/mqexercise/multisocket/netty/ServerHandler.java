@@ -26,7 +26,7 @@ import java.io.UnsupportedEncodingException;
 //特别注意这个注解@Sharable，默认的4版本不能自动导入匹配的包，需要手动加入
 //地址是import io.netty.channel.ChannelHandler.Sharable;
 @Sharable
-public class WebSocketServerHandler extends ChannelInboundHandlerAdapter {
+public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     private static final String WSURI = "/ws";
 

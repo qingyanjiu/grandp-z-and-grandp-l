@@ -10,7 +10,7 @@ import io.netty.handler.logging.LoggingHandler;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SocketServerNetty {
+public class NettyServer {
 
     private int port = 8090;
 
@@ -31,7 +31,7 @@ public class SocketServerNetty {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new WebSocketChannelInitializer());
+                    .childHandler(new ServerChannelInitializer());
             try {
                 ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
                 channelFuture.channel().closeFuture().sync();
@@ -45,7 +45,7 @@ public class SocketServerNetty {
     }
 
     public static void main(String[] args) {
-        SocketServerNetty socketServerNetty = new SocketServerNetty();
+        NettyServer socketServerNetty = new NettyServer();
         socketServerNetty.serverStart();
     }
 }

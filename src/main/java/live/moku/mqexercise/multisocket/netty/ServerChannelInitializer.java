@@ -3,18 +3,16 @@ package live.moku.mqexercise.multisocket.netty;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 import live.moku.mqexercise.multisocket.codec.MessageDecoder;
 import live.moku.mqexercise.multisocket.codec.MessageEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WebSocketChannelInitializer extends ChannelInitializer<SocketChannel> {
+public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     @Autowired
-    private WebSocketServerHandler webSocketHandler;
+    private ServerHandler webSocketHandler;
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
@@ -37,6 +35,6 @@ public class WebSocketChannelInitializer extends ChannelInitializer<SocketChanne
         pipeline.addLast("encoder", new MessageEncoder());
 
         // 自己的逻辑Handler
-        pipeline.addLast("handler", new WebSocketServerHandler());
+        pipeline.addLast("handler", new ServerHandler());
     }
 }
