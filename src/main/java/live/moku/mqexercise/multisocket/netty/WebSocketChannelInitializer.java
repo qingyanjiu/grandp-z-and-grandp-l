@@ -5,6 +5,8 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import live.moku.mqexercise.multisocket.codec.MessageDecoder;
+import live.moku.mqexercise.multisocket.codec.MessageEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +33,8 @@ public class WebSocketChannelInitializer extends ChannelInitializer<SocketChanne
 //        pipeline.addLast("webSocketServerProtocolHandler", new WebSocketServerProtocolHandler("/ws"));
 
         // 字符串解码 和 编码
-        pipeline.addLast("decoder", new StringDecoder());
-        pipeline.addLast("encoder", new StringEncoder());
+        pipeline.addLast("decoder", new MessageDecoder(1024 * 1024, 0, 4));
+        pipeline.addLast("encoder", new MessageEncoder());
 
         // 自己的逻辑Handler
         pipeline.addLast("handler", new WebSocketServerHandler());

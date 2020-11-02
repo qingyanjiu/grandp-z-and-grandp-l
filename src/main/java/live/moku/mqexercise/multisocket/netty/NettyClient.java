@@ -8,6 +8,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import live.moku.mqexercise.Message;
+import live.moku.mqexercise.multisocket.codec.MessageDecoder;
+import live.moku.mqexercise.multisocket.codec.MessageEncoder;
+import live.moku.mqexercise.multisocket.codec.MessageStruct;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,9 +39,12 @@ public class NettyClient {
                     public void initChannel(SocketChannel ch) throws Exception {
                         System.out.println("正在连接中...");
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast(new StringEncoder()); //编码request
-                        pipeline.addLast(new StringDecoder()); //解码response
-                        pipeline.addLast(new ClientHandler()); //客户端处理类
+                        //编码request
+                        pipeline.addLast(new MessageEncoder());
+                        //解码response
+                        pipeline.addLast(new MessageDecoder(1024 * 1024, 0, 4));
+                        //客户端处理类
+                        pipeline.addLast(new ClientHandler());
 
                     }
                 });
@@ -72,10 +78,8 @@ public class NettyClient {
         nettyClient.start();
         Channel channel = nettyClient.getChannel();
         //消息体
-        Message message = new Message();
-        message.setUuid(0);
-        message.setContent("test");
+        MessageStruct message = new MessageStruct("testtest");
         //channel对象可保存在map中，供其它地方发送消息
-        channel.writeAndFlush(message.toString());
+        channel.writeAndFlush(message);
     }
 }

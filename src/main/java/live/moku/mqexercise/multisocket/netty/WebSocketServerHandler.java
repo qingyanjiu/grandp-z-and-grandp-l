@@ -37,7 +37,7 @@ public class WebSocketServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         Channel channel = ctx.channel();
-        System.out.println("收到客户端信息" + channel.remoteAddress() + ": " + msg);
+        System.out.println("收到客户端信息" + channel.remoteAddress() + ": " + msg.toString());
         channel.writeAndFlush(new TextWebSocketFrame("服务端响应: "));
     }
 
