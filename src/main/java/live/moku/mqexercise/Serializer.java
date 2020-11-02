@@ -36,7 +36,7 @@ public class Serializer {
         return res;
     }
 
-    static byte[] serialize(Message message) {
+    public static byte[] serialize(Message message) {
         ObjectMapper objectMapper = new ObjectMapper();
         byte[] ret = null;
         try {
@@ -48,7 +48,7 @@ public class Serializer {
         return ret;
     }
 
-    static Message deserialize(byte[] bytes) {
+    public static Message deserialize(byte[] bytes) {
         ObjectMapper objectMapper = new ObjectMapper();
         Message ret = null;
         try {
