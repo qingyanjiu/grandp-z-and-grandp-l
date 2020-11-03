@@ -14,6 +14,7 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import live.moku.mqexercise.multisocket.codec.MessageStruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         Channel channel = ctx.channel();
-        System.out.println("收到客户端信息" + channel.remoteAddress() + ": " + msg.toString());
-        channel.writeAndFlush(new TextWebSocketFrame("服务端响应: "));
+        System.out.println("收到客户端信息" + channel.remoteAddress() + ": " + ((MessageStruct)msg).getMessage());
+        MessageStruct messageStruct = new MessageStruct("返回" + ((MessageStruct)msg).getMessage());
+        channel.writeAndFlush(messageStruct);
     }
 
     @Override

@@ -5,9 +5,6 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
-import live.moku.mqexercise.Message;
 import live.moku.mqexercise.multisocket.codec.MessageDecoder;
 import live.moku.mqexercise.multisocket.codec.MessageEncoder;
 import live.moku.mqexercise.multisocket.codec.MessageStruct;
@@ -15,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class NettyClient {
+
+    public static final int LOOP_TIMES = 100_000;
 
     private String host = "127.0.0.1";
     private int port = 8090;
@@ -77,9 +76,11 @@ public class NettyClient {
         NettyClient nettyClient = new NettyClient();
         nettyClient.start();
         Channel channel = nettyClient.getChannel();
-        //消息体
-        MessageStruct message = new MessageStruct("testtest");
-        //channel对象可保存在map中，供其它地方发送消息
-        channel.writeAndFlush(message);
+        for (int i = 0; i < LOOP_TIMES; i++) {
+            //消息体
+            MessageStruct message = new MessageStruct("客户端说话了: " + i);
+            //channel对象可保存在map中，供其它地方发送消息
+            channel.writeAndFlush(message);
+        }
     }
 }

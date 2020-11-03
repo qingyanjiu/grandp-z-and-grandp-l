@@ -29,7 +29,7 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
             //bytebuffer中读取字节数组
             buf.readBytes(body);
             //获取消息体，这里转成了message，复杂的还可以转
-            String content = body.toString();
+            String content = new String(body, "GBK");
             message = new MessageStruct(requestId, content);
         } finally {
             if(buf != null) {

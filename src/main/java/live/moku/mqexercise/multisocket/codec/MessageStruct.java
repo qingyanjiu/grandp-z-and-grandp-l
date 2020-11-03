@@ -34,7 +34,7 @@ public class MessageStruct implements Serializable, Cloneable {
     public MessageStruct(String msg) {
         this.requestId = flowNum.incrementAndGet();
         this.message = msg;
-        this.body = msg.getBytes(Charset.forName("UTF-8"));
+        this.body = msg.getBytes(Charset.forName("GBK"));
         //总消息长度为requestId字段长度(long类型 8字节) +body消息主体长度的总和
         //length字段表示 requestId + body的总长度，所以总长度减去 requestId的8个字节，就是body长度
         this.length = body.length + 8;
@@ -43,7 +43,7 @@ public class MessageStruct implements Serializable, Cloneable {
     public MessageStruct(long requestId, String msg) {
         this.requestId = requestId;
         this.message = msg;
-        this.body = msg.getBytes(Charset.forName("UTF-8"));
+        this.body = msg.getBytes(Charset.forName("GBK"));
         this.length = body.length + 8;
     }
 
